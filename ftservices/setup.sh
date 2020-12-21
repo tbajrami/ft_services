@@ -12,7 +12,7 @@ kubectl create -f config.yaml
 
 #INSTALL NGINX
 eval $(minikube docker-env)
-docker build -t s-nginx .
+docker build -t s-nginx ./nginx
 kubectl create -f nginx.yaml
 
 #RUNNING DASHBOARD
