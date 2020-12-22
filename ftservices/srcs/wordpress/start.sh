@@ -1,5 +1,3 @@
-tar -zxf wordpress.tar.gz wordpress
-mv wordpress /var/www/localhost/wordpress
-rm -f wordpress.tar.gz
+php -S 0.0.0.0:5050 -t /www/wordpress
 
 tail -f /dev/null

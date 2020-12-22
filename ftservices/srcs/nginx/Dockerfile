@@ -17,6 +17,6 @@ RUN yes "" | openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ss
 COPY start.sh ./start.sh
 RUN chmod +x /start.sh
 
-EXPOSE 80 443 22
+EXPOSE 80 443
 
 ENTRYPOINT sh start.sh

@@ -3,7 +3,7 @@ kind: Service
 metadata:
   annotations:
     metallb.universe.tf/allow-shared-ip: shared
-  name: wordpress
+  name: wordpress-service
   labels:
     app: wordpress
 spec:
@@ -11,6 +11,7 @@ spec:
   ports:
   - name: wordpress
     port: 5050
+    targetPort: 5050
   selector:
     app: wordpress
 
