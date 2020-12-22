@@ -1,3 +1,4 @@
+minikube delete
 minikube start --driver=docker
 
 #INSTALL METALLB
@@ -13,8 +14,10 @@ kubectl apply -f config.yaml
 
 #INSTALL NGINX
 eval $(minikube docker-env)
-docker build -t s-nginx ./nginx
+docker build -t s-nginx ./srcs/nginx
+docker build -t s-wordpress ./srcs/wordpress
 kubectl apply -f nginx.yaml
+kubectl apply -f wordpress.yaml
 
 #RUNNING DASHBOARD
 #minikube dashboard &
