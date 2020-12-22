@@ -32,8 +32,8 @@ define( 'DB_PASSWORD', 'password' );
 /** MySQL hostname */
 define( 'DB_HOST', 'mysql-service' );
 
-define('WP_HOME', 'http://172.17.0.2:5050' );
-define('WP_SITEURL', 'http://172.17.0.2:5050' );
+define('WP_HOME', 'http://172.18.0.6:5050' );
+define('WP_SITEURL', 'http://172.18.0.6:5050' );
 
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
@@ -54,11 +54,6 @@ define( 'DB_COLLATE', '' );
  */
 define( 'AUTH_KEY',         'put your unique phrase here' );
 define( 'SECURE_AUTH_KEY',  'put your unique phrase here' );
-define( 'LOGGED_IN_KEY',    'put your unique phrase here' );
-define( 'NONCE_KEY',        'put your unique phrase here' );
-define( 'AUTH_SALT',        'put your unique phrase here' );
-define( 'SECURE_AUTH_SALT', 'put your unique phrase here' );
-define( 'LOGGED_IN_SALT',   'put your unique phrase here' );
 define( 'NONCE_SALT',       'put your unique phrase here' );
 
 /**#@-*/
