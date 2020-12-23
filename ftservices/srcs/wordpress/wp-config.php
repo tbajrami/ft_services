@@ -24,16 +24,13 @@ foreach ($vars as $var) {
 define( 'DB_NAME', 'wordpress' );
 
 /** MySQL database username */
-define( 'DB_USER', 'user' );
+define( 'DB_USER', 'wordpress' );
 
 /** MySQL database password */
 define( 'DB_PASSWORD', 'password' );
 
 /** MySQL hostname */
 define( 'DB_HOST', 'mysql-service' );
-
-define('WP_HOME', 'http://172.18.0.6:5050' );
-define('WP_SITEURL', 'http://172.18.0.6:5050' );
 
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8' );
