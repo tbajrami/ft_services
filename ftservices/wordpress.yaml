@@ -19,6 +19,9 @@ spec:
         ports:
         - containerPort: 5050
         imagePullPolicy: Never
+        env:
+          - name: MYSQL_IP
+            value: 10.106.5.36
 ---
 apiVersion: v1
 kind: Service

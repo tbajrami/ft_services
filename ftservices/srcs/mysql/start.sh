@@ -1,11 +1,21 @@
-mysql_install_db --user=root
+#!/bin/sh
 
-mysql -u root <<SQL_CMDS
-        CREATE DATABASE wordpress;
-        CREATE USER 'wordpress'@'localhost';
-        SET password FOR 'wordpress'@'localhost' = password('password');
-        GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'localhost' IDENTIFIED BY 'password';
-        FLUSH PRIVILEGES;
-SQL_CMDS
+mkdir -p /run/mysqld
 
-tail -f /dev/null
+mariadb-install-db -u root
+
+# Invoking "mysqld" will start the MySQL server. Terminating "mysqld" will shutdown the MySQL server.
+mysqld -u root & sleep 5
+
+
+
+# Create Wordpress database.
+mysql -u root --execute="CREATE DATABASE wordpress;"
+mysql -u root wordpress < wordpress.sql
+mysql -u root --execute="CREATE USER 'wordpress'@'%';"
+mysql -u root --execute="SET password FOR 'wordpress'@'%' = password('password');"
+mysql -u root --execute="GRANT ALL PRIVILEGES ON wordpress.* TO 'wordpress'@'%' IDENTIFIED BY 'password';"
+mysql -u root --execute="FLUSH PRIVILEGES;"
+
+# Start Telegraf and sleep infinity for avoid container to stop.
+sleep infinite
