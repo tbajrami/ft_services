@@ -15,11 +15,13 @@ eval $(minikube docker-env)
 docker build -t s-nginx ./srcs/nginx
 docker build -t s-wordpress ./srcs/wordpress
 docker build -t s-mysql ./srcs/mysql
+docker build -t s-phpmyadmin ./srcs/phpmyadmin
 
 #DEPLOY SERVICES
 kubectl apply -f nginx.yaml
 kubectl apply -f wordpress.yaml
 kubectl apply -f mysql.yaml
+kubectl apply -f phpmyadmin.yaml
 
 #RUNNING DASHBOARD
 #minikube dashboard &
