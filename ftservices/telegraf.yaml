@@ -1,114 +1,81 @@
 apiVersion: v1
+kind: Secret
+metadata:
+  name: telegraf-secrets
+type: Opaque
+stringData:
+  INFLUXDB_DB: database
+  INFLUXDB_URL: http://influxdb:8086
+  INFLUXDB_USER: user
+  INFLUXDB_USER_PASSWORD: password
+---
+apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: telegraf
-  namespace: monitoring
-  labels:
-    k8s-app: telegraf
+  name: telegraf-config
 data:
   telegraf.conf: |+
-    [global_tags]
-      env = "EKS eu-central"
-    [agent]
-      hostname = "$HOSTNAME"
     [[outputs.influxdb]]
-      urls = ["http://$INFLUXDB_HOST:8086/"] # required
-      database = "$INFLUXDB_DB" # required
-      timeout = "5s"
+      urls = ["$INFLUXDB_URL"]
+      database = "$INFLUXDB_DB"
       username = "$INFLUXDB_USER"
       password = "$INFLUXDB_USER_PASSWORD"
-    [[inputs.cpu]]
-      percpu = true
-      totalcpu = true
-      collect_cpu_time = false
-      report_active = false
-    [[inputs.disk]]
-      ignore_fs = ["tmpfs", "devtmpfs", "devfs"]
-    [[inputs.diskio]]
-    [[inputs.kernel]]
-    [[inputs.mem]]
-    [[inputs.processes]]
-    [[inputs.swap]]
-    [[inputs.system]]
-    [[inputs.docker]]
-      endpoint = "unix:///var/run/docker.sock"
+
+    [[inputs.statsd]]
+      max_tcp_connections = 250
+      tcp_keep_alive = false
+      service_address = ":8125"
+      delete_gauges = true
+      delete_counters = true
+      delete_sets = true
+      delete_timings = true
+      metric_separator = "."
+      allowed_pending_messages = 10000
+      percentile_limit = 1000
+      parse_data_dog_tags = true 
+      read_buffer_size = 65535
 ---
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: telegraf
-  namespace: monitoring
-  labels:
-    k8s-app: telegraf
 spec:
   selector:
     matchLabels:
-      name: telegraf
+      app: telegraf
+  minReadySeconds: 5
   template:
     metadata:
       labels:
-        name: telegraf
+        app: telegraf
     spec:
       containers:
-      - name: telegraf
-        image: docker.io/telegraf:1.5.2
-        env:
-        - name: HOSTNAME
-          valueFrom:
-            fieldRef:
-              fieldPath: spec.nodeName
-        - name: "HOST_PROC"
-          value: "/rootfs/proc"
-        - name: "HOST_SYS"
-          value: "/rootfs/sys"
-        - name: INFLUXDB_USER
-          valueFrom:
-            secretKeyRef:
-              name: influxdb-creds
-              key: INFLUXDB_USER
-        - name: INFLUXDB_USER_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: influxdb-creds
-              key: INFLUXDB_USER_PASSWORD
-        - name: INFLUXDB_HOST
-          valueFrom:
-            secretKeyRef:
-              name: influxdb-creds
-              key: INFLUXDB_HOST
-        - name: INFLUXDB_DB
-          valueFrom:
-            secretKeyRef:
-              name: influxdb-creds
-              key: INFLUXDB_DB
-        volumeMounts:
-        - name: sys
-          mountPath: /rootfs/sys
-          readOnly: true
-        - name: proc
-          mountPath: /rootfs/proc
-          readOnly: true
-        - name: docker-socket
-          mountPath: /var/run/docker.sock
-        - name: utmp
-          mountPath: /var/run/utmp
-          readOnly: true
-        - name: config
-          mountPath: /etc/telegraf
-      terminationGracePeriodSeconds: 30
-      volumes:
-      - name: sys
-        hostPath:
-          path: /sys
-      - name: docker-socket
-        hostPath:
-          path: /var/run/docker.sock
-      - name: proc
-        hostPath:
-          path: /proc
-      - name: utmp
-        hostPath:
-          path: /var/run/utmp
-      - name: config
-        configMap:
+        - image: telegraf:1.10.0
           name: telegraf
+          envFrom:
+            - secretRef:
+                name: telegraf-secrets
+          volumeMounts:
+            - name: telegraf-config-volume
+              mountPath: /etc/telegraf/telegraf.conf
+              subPath: telegraf.conf
+              readOnly: true
+      volumes:
+        - name: telegraf-config-volume
+          configMap:
+            name: telegraf-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: telegraf
+  name: telegraf
+spec:
+  ports:
+  - port: 8125
+    protocol: TCP
+    targetPort: 8125
+  selector:
+    app: telegraf
+  type: ClusterIP
