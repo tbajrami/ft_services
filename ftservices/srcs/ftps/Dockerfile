@@ -1,10 +1,10 @@
 FROM alpine
 
-RUN apk update && apk add --no-cache --upgrade bash \
-&& apk add --no-cache --repository=http://dl-cdn.alpinelinux.org/alpine/edge/main libc6-compat
+RUN apk upgrade && apk add vsftpd openssl
 
-RUN wget https://dl.grafana.com/oss/release/grafana-7.3.6.linux-amd64.tar.gz
-RUN tar -xzvf grafana-7.3.6.linux-amd64.tar.gz
+COPY vsftpd.conf /etc/vsftpd/vsftpd.conf
+COPY start.sh ./start.sh
+RUN chmod +x ./start.sh
 
 RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.15.2_linux_amd64.tar.gz \
 && tar -zxf telegraf-1.15.2_linux_amd64.tar.gz \
@@ -14,11 +14,10 @@ RUN cp -rf telegraf/etc/* /etc/
 RUN cp -rf telegraf/usr/* /usr/
 COPY ./telegraf.conf /etc/telegraf/telegraf.conf
 RUN apk add openrc
+RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 
-COPY grafana.db ./grafana-7.3.6/data/grafana.db
-COPY start.sh .
-RUN chmod +x ./start.sh
+RUN yes "" | openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/certs/vsftpd.key -out /etc/ssl/certs/vsftpd.crt
 
-EXPOSE 3000
+EXPOSE 21 30000
 
 ENTRYPOINT sh start.sh
