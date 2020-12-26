@@ -5,7 +5,6 @@ metadata:
   labels:
     type: local
 spec:
-  storageClassName: manual
   capacity:
     storage: 5Gi
   accessModes:
@@ -18,7 +17,6 @@ kind: PersistentVolumeClaim
 metadata:
   name: influxdb-pvc
 spec:
-  storageClassName: manual
   accessModes:
     - ReadWriteOnce
   resources:
@@ -55,15 +53,15 @@ spec:
         persistentVolumeClaim:
           claimName: influxdb-pvc
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: influxdb
-  labels:
-    app: influxdb
-spec:
-  ports:
-    - port: 8086
-  selector:
+apiVersion: v1  
+kind: Service  
+metadata:  
+  name: influxdb-service  
+spec:  
+  selector:  
     app: influxdb
   type: ClusterIP
+  ports:
+    - protocol: TCP
+      port: 8086
+      targetPort: 8086

@@ -1,3 +1,3 @@
-nginx -g 'daemon off;'
+telegraf & nginx -g 'daemon off;'
 
 tail -f /dev/null

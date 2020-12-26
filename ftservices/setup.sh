@@ -19,13 +19,6 @@ docker build -t s-phpmyadmin ./srcs/phpmyadmin
 docker build -t s-grafana ./srcs/grafana
 docker build -t s-influxdb ./srcs/influxdb
 
-kubectl create secret generic influxdb-creds \
-  --from-literal=INFLUXDB_DATABASE=database \
-  --from-literal=INFLUXDB_USERNAME=user \
-  --from-literal=INFLUXDB_PASSWORD=password \
-  --from-literal=INFLUXDB_HOST=influxdb
-kubectl apply -f telegraf.yaml
-
 #DEPLOY SERVICES
 kubectl apply -f nginx.yaml
 kubectl apply -f wordpress.yaml
