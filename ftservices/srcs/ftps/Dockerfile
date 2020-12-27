@@ -1,6 +1,6 @@
 FROM alpine
 
-RUN apk upgrade && apk add vsftpd openssl
+RUN apk upgrade && apk add vsftpd openssl openrc
 
 COPY vsftpd.conf /etc/vsftpd/vsftpd.conf
 COPY start.sh ./start.sh
@@ -18,6 +18,6 @@ RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 
 RUN yes "" | openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/certs/vsftpd.key -out /etc/ssl/certs/vsftpd.crt
 
-EXPOSE 21 30000
+EXPOSE 20 21 21000-21010
 
 ENTRYPOINT sh start.sh
