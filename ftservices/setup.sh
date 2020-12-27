@@ -12,21 +12,21 @@ kubectl apply -f config.yaml
 
 #BUILD IMAGES
 eval $(minikube docker-env)
-# docker build -t s-nginx ./srcs/nginx
-# docker build -t s-wordpress ./srcs/wordpress
-# docker build -t s-mysql ./srcs/mysql
-# docker build -t s-phpmyadmin ./srcs/phpmyadmin
-# docker build -t s-grafana ./srcs/grafana
-# docker build -t s-influxdb ./srcs/influxdb
+docker build -t s-nginx ./srcs/nginx
+docker build -t s-wordpress ./srcs/wordpress
+docker build -t s-mysql ./srcs/mysql
+docker build -t s-phpmyadmin ./srcs/phpmyadmin
+docker build -t s-grafana ./srcs/grafana
+docker build -t s-influxdb ./srcs/influxdb
 docker build -t s-ftps ./srcs/ftps
 
 #DEPLOY SERVICES
-# kubectl apply -f nginx.yaml
-# kubectl apply -f wordpress.yaml
-# kubectl apply -f mysql.yaml
-# kubectl apply -f phpmyadmin.yaml
-# kubectl apply -f grafana.yaml
-# kubectl apply -f influxdb.yaml
+kubectl apply -f nginx.yaml
+kubectl apply -f wordpress.yaml
+kubectl apply -f mysql.yaml
+kubectl apply -f phpmyadmin.yaml
+kubectl apply -f grafana.yaml
+kubectl apply -f influxdb.yaml
 kubectl apply -f ftps.yaml
 
 #RUNNING DASHBOARD

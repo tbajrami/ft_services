@@ -7,5 +7,5 @@ mkdir /srcs/ftp/user/folder_text
 chown user:user /srcs/ftp/user/folder_text
 touch /srcs/ftp/user/folder_text/text.txt
 
-#telegraf &
+telegraf &
 exec /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf & sleep infinite

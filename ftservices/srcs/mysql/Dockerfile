@@ -10,8 +10,6 @@ RUN cp -rf telegraf/etc/* /etc/
 RUN cp -rf telegraf/usr/* /usr/
 COPY ./telegraf.conf /etc/telegraf/telegraf.conf
 RUN apk add openrc
-
-# Required by telegraf
 RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 
 COPY start.sh /start.sh
