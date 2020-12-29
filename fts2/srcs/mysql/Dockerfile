@@ -13,8 +13,10 @@ RUN apk add openrc
 RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 
 COPY start.sh /start.sh
+COPY livenessprobe.sh /livenessprobe.sh
 COPY wordpress.sql /wordpress.sql
 RUN chmod +x /start.sh
+RUN chmod +x /livenessprobe.sh
 COPY my.cnf /etc/
 
 EXPOSE 3306

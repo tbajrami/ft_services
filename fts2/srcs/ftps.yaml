@@ -30,7 +30,7 @@ kind: Service
 metadata:
   annotations:
     metallb.universe.tf/allow-shared-ip: shared
-  name: ftps-service
+  name: ftps
 spec:
   selector:
     app: ftps

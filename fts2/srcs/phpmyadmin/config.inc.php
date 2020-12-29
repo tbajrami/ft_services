@@ -6,7 +6,7 @@ $cfg['blowfish_secret'] = '';
 $i = 1;
 
 $cfg['Servers'][$i]['auth_type'] = 'cookie';
-$cfg['Servers'][$i]['host'] = 'mysql-service';
+$cfg['Servers'][$i]['host'] = 'mysql';
 $cfg['Servers'][$i]['port'] = "3306";
 $cfg['Servers'][$i]['user'] = "wordpress";
 $cfg['Servers'][$i]['password'] = "password";
