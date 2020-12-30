@@ -24,28 +24,28 @@ echo load balancer metallb is configured
 
 #BUILD IMAGES
 eval $(minikube docker-env)
-# docker build -t s-nginx ./srcs/nginx > /dev/null
-# echo nginx container built
-# docker build -t s-wordpress ./srcs/wordpress > /dev/null
-# echo wordpress container built
-# docker build -t s-mysql ./srcs/mysql
-# echo mysql container built
-# docker build -t s-phpmyadmin ./srcs/phpmyadmin > /dev/null
-# echo phpmyadmin container built
-# docker build -t s-grafana ./srcs/grafana > /dev/null
-# echo grafana container built
-# docker build -t s-influxdb ./srcs/influxdb > /dev/null
-# echo influxdb container built
+docker build -t s-nginx ./srcs/nginx > /dev/null
+echo nginx container built
+docker build -t s-wordpress ./srcs/wordpress > /dev/null
+echo wordpress container built
+docker build -t s-mysql ./srcs/mysql > /dev/null
+echo mysql container built
+docker build -t s-phpmyadmin ./srcs/phpmyadmin > /dev/null
+echo phpmyadmin container built
+docker build -t s-grafana ./srcs/grafana > /dev/null
+echo grafana container built
+docker build -t s-influxdb ./srcs/influxdb > /dev/null
+echo influxdb container built
 docker build -t s-ftps ./srcs/ftps > /dev/null
 echo ftps container built
 
 #DEPLOY SERVICES
-# kubectl apply -f srcs/nginx.yaml > /dev/null
-# kubectl apply -f srcs/wordpress.yaml > /dev/null
-# kubectl apply -f srcs/mysql.yaml
-# kubectl apply -f srcs/phpmyadmin.yaml > /dev/null
-# kubectl apply -f srcs/grafana.yaml > /dev/null
-# kubectl apply -f srcs/influxdb.yaml > /dev/null
+kubectl apply -f srcs/nginx.yaml > /dev/null
+kubectl apply -f srcs/wordpress.yaml > /dev/null
+kubectl apply -f srcs/mysql.yaml > /dev/null
+kubectl apply -f srcs/phpmyadmin.yaml > /dev/null
+kubectl apply -f srcs/grafana.yaml > /dev/null
+kubectl apply -f srcs/influxdb.yaml > /dev/null
 kubectl apply -f srcs/ftps.yaml > /dev/null
 echo all services are deployed
 

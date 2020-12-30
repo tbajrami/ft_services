@@ -5,8 +5,6 @@ RUN apk upgrade && apk add vsftpd openssl openrc curl
 COPY vsftpd.conf /etc/vsftpd/vsftpd.conf
 COPY start.sh ./start.sh
 RUN chmod +x ./start.sh
-COPY livenessprobe.sh /livenessprobe.sh
-RUN chmod +x /livenessprobe.sh
 
 RUN wget https://dl.influxdata.com/telegraf/releases/telegraf-1.15.2_linux_amd64.tar.gz \
 && tar -zxf telegraf-1.15.2_linux_amd64.tar.gz \
