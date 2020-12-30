@@ -8,4 +8,4 @@ chown user:user /srcs/ftp/user/folder_text
 touch /srcs/ftp/user/folder_text/text.txt
 
 telegraf &
-exec /usr/sbin/vsftpd /etc/vsftpd/vsftpd.conf
+vsftpd /etc/vsftpd/vsftpd.conf

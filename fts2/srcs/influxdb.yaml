@@ -1,3 +1,9 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: local-storage
+provisioner: kubernetes.io/no-provisioner
+---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
@@ -5,23 +11,25 @@ metadata:
   labels:
     type: local
 spec:
+  storageClassName: local-storage
   capacity:
-    storage: 5Gi
+    storage: 1Gi
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/data"
+    path: "/mnt/influxdb"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: influxdb-pvc
+  name: influxdb-pv-claim
 spec:
+  storageClassName: local-storage
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 5Gi
+      storage: 1Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -51,7 +59,7 @@ spec:
       volumes:
       - name: influxdb-pv
         persistentVolumeClaim:
-          claimName: influxdb-pvc
+          claimName: influxdb-pv-claim
 ---
 apiVersion: v1  
 kind: Service  
